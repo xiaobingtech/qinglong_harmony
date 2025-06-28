@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/fanxiaobing/.ohos/config/default_qinglong_harmony_XhZeYGfe_6vjraaKlYBO1zu7qVPmFey7lFpZqlP8zfw=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B56A9DC430AE75679F6674E58811EFA51AFE91D7D6F477C4C0175812E8A4F73C36586EB51ADD80B",
+          "profile": "/Users/fanxiaobing/.ohos/config/default_qinglong_harmony_XhZeYGfe_6vjraaKlYBO1zu7qVPmFey7lFpZqlP8zfw=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/fanxiaobing/.ohos/config/default_qinglong_harmony_XhZeYGfe_6vjraaKlYBO1zu7qVPmFey7lFpZqlP8zfw=.p12",
+          "storePassword": "0000001B9025B368F1244F7DA8D8B7A4C406F09EA29DF95DABAE779AA2F8C49D8C36339F098BF8981B0284"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
