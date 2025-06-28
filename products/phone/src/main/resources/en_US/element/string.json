@@ -10,11 +10,11 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "Sample in HarmonyOS"
+      "value": "QingLong DashBoard"
     },
     {
       "name": "splash_main_title",
-      "value": "Sample in HarmonyOS"
+      "value": "QingLong DashBoard"
     },
     {
       "name": "splash_sub_title",
@@ -34,7 +34,7 @@
     },
     {
       "name": "tab_home",
-      "value": "Component"
+      "value": "Home"
     },
     {
       "name": "tab_sample",
@@ -46,7 +46,7 @@
     },
     {
       "name": "tab_mine",
-      "value": "Me"
+      "value": "Setting"
     },
     {
       "name": "PhoneFormAbility_desc",

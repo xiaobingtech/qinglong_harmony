@@ -39,7 +39,7 @@ struct SplashPage {
       delay: CommonConstants.ANIMATION_DELAY,
       duration: CommonConstants.ANIMATION_DURATION,
       onFinish: () => {
-        this.viewModel.sendEvent(SplashEventTypeEnum.JUMP_TO_MAIN);
+        this.viewModel.sendEvent(SplashEventTypeEnum.JUMP_TO_LOGIN);
       }
     }, () => {
       this.viewModel.sendEvent(SplashEventTypeEnum.PRELOAD_RESOURCES);

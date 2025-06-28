@@ -18,10 +18,12 @@ import { BaseState, BaseVM, Logger, PageContext, PreferenceManager } from '@ohos
 import { DiscoverModel } from '@ohos/exploration';
 import { ComponentListModel } from '@ohos/componentlibrary';
 import { SampleModel } from '@ohos/devpractices';
+import { privacyManager } from '@kit.StoreKit';
+import { common } from '@kit.AbilityKit';
 
-const TAG: string = '[SplashViewModel]';
+const TAG: string = '[LoginViewModel]';
 
-export class SplashViewModel extends BaseVM<BaseState> {
+export class LoginViewModel extends BaseVM<BaseState> {
   private pageContext: PageContext = AppStorage.get('pageContext') as PageContext;
   private componentListModel: ComponentListModel = ComponentListModel.getInstance();
   private sampleModel: SampleModel = SampleModel.getInstance();
@@ -32,15 +34,13 @@ export class SplashViewModel extends BaseVM<BaseState> {
     super(new BaseState());
   }
 
-  public sendEvent(eventType: SplashEventTypeEnum): void {
-    if (eventType === SplashEventTypeEnum.JUMP_TO_MAIN) {
+  public sendEvent(eventType: LoginEventTypeEnum): void {
+    if (eventType === LoginEventTypeEnum.JUMP_TO_MAIN) {
       this.jumpToMainPage();
-    } else if (eventType === SplashEventTypeEnum.PRELOAD_RESOURCES) {
+    } else if (eventType === LoginEventTypeEnum.PRELOAD_RESOURCES) {
       this.preloadResources();
-    } else if (eventType === SplashEventTypeEnum.CHECK_FIRST_START) {
-      this.checkIsFirstStart();
-    } else if (eventType === SplashEventTypeEnum.JUMP_TO_LOGIN) {
-      this.jumpToLoginPage();
+    } else if (eventType === LoginEventTypeEnum.CHECK_AGREE) {
+      this.checkAgree();
     }
   }
 
@@ -50,39 +50,28 @@ export class SplashViewModel extends BaseVM<BaseState> {
     });
   }
 
-  private jumpToLoginPage(): void {
-    this.pageContext.replacePage({
-      routerName: 'LoginPage',
-    });
-  }
-
   private preloadResources(): void {
     this.componentListModel.preloadComponentData();
     this.sampleModel.preloadSamplePageData()
     this.discoverModel.preloadDiscoveryData()
   }
 
-  private checkIsFirstStart(): void {
-    this.preferenceManager.hasValue('isFirstStart').then((hasResult: boolean) => {
-      if (hasResult) {
-        Logger.info(TAG, 'Not first startup.');
-      } else {
-        Logger.info(TAG, 'First startup.');
-        this.preferenceManager.setValue('isFirstStart', false).then(() => {
-          Logger.info(TAG, 'Put the value of startup Successfully.');
-        }).catch((err: BusinessError) => {
-          Logger.error(TAG, `Put the value of startup Failed, err code: ${err.code}, message: ${err.message}`);
-        });
+  private checkAgree(): void {
+    try {
+      let appPrivacyResults: privacyManager.AppPrivacyResult[] = privacyManager.getAppPrivacyResult();
+      for (let i = 0; i < appPrivacyResults.length; i++) {
+        Logger.info('TAG',
+          "Succeeded in getting AppPrivacyResult type = " + appPrivacyResults[i]["type"] + ", version = " +
+          appPrivacyResults[i]["versionCode"] + ", result = " + appPrivacyResults[i]["result"]);
       }
-    }).catch((err: BusinessError) => {
-      Logger.error(TAG, `check startup Failed, err code: ${err.code}, message: ${err.message}`);
-    });
+    } catch (error) {
+      Logger.error('TAG', "GetAppPrivacyResultPublic exception code: " + error.code + ", exception message: " + error.message);
+    }
   }
 }
 
-export enum SplashEventTypeEnum {
+export enum LoginEventTypeEnum {
   JUMP_TO_MAIN = 'jumpToMainPage',
-  JUMP_TO_LOGIN = 'jumpToLoginPage',
   PRELOAD_RESOURCES = 'preloadResources',
-  CHECK_FIRST_START = 'checkIsFirstStart',
+  CHECK_AGREE = 'checkAgree',
 }

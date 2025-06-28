@@ -13,6 +13,16 @@
     "installationFree": false,
     "pages": "$profile:main_pages",
     "routerMap": "$profile:router_map",
+    "metadata": [
+      {
+        "name": "appgallery_privacy_hosted",
+        "value": "1"
+      },
+      {
+        "name": "appgallery_privacy_link_privacy_statement",
+        "value": "https://agreement-drcn.hispace.dbankcloud.cn/index.html?lang=zh&agreementId=1561100168093258688" // 必须是https网址
+      }
+    ],
     "abilities": [
       {
         "name": "EntryAbility",
