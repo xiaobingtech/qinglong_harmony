@@ -15,6 +15,7 @@
 
 import { ConfigurationConstant } from '@kit.AbilityKit';
 import { BreakpointTypeEnum, CommonConstants, GlobalInfoModel, Logger, PageContext, WindowUtil, } from '@ohos/common';
+import { AccountModel } from '../model/AccountModel';
 import { LoginEventTypeEnum, LoginViewModel } from '../viewmodel/LoginViewModel';
 import { SplashEventTypeEnum, SplashViewModel } from '../viewmodel/SplashViewModel';
 
@@ -49,6 +50,8 @@ struct LoginPage {
   @State loading: boolean = false
 
 
+
+
   onPageHide() {
     Logger.info(TAG, 'onPageHide');
     WindowUtil.updateStatusBarColor(getContext(this),
@@ -60,10 +63,28 @@ struct LoginPage {
     WindowUtil.updateStatusBarColor(getContext(this), isSystemDark);
   }
 
-  aboutToAppear(): void {
+  async aboutToAppear(): Promise<void> {
     WindowUtil.updateStatusBarColor(getContext(this), true);
-    this.viewModel.sendEvent(LoginEventTypeEnum.PRELOAD_RESOURCES);
+    await this.viewModel.sendEvent(LoginEventTypeEnum.PRELOAD_RESOURCES);
     this.viewModel.sendEvent(LoginEventTypeEnum.CHECK_AGREE);
+  }
+
+  @Builder
+  accountMenu() {
+    Menu(){
+      ForEach(this.viewModel.accounts, (item: AccountModel) => {
+        MenuItem({content: item.server})
+          .onClick(() => {
+            this.server = item.server
+            this.username = item.username
+            this.password = item.password
+            this.useAccount = item.useAccount
+            this.client_id = item.client_id
+            this.client_secret = item.client_secret
+            this.remark = item.remark
+          })
+      }, (item: AccountModel) => item.server)
+    }
   }
 
   build() {
@@ -89,7 +110,7 @@ struct LoginPage {
               .borderRadius({ topLeft: 10, bottomLeft: 10 })
               .width('calc(100% - 40vp)')
             SymbolGlyph($r('sys.symbol.chevron_down'))
-              // .bindMenu(this.accountMenu())
+              .bindMenu(this.accountMenu())
               .width(40)
               .height(40)
               .fontColor([this.systemColorMode == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT ? $r('app.color.font_primary_light') : $r('app.color.font_primary_dark')])
@@ -180,7 +201,7 @@ struct LoginPage {
         }
       }
       .padding(15)
-      .width('100%')
+      .width(this.globalInfoModel.currentBreakpoint == BreakpointTypeEnum.MD ? '100%' : '30%')
       .height('100%')
       .backgroundColor(this.systemColorMode == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT ? $r('app.color.icon_primary_dark') : $r('app.color.icon_primary_light'))
     }

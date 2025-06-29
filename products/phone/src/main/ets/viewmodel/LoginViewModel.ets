@@ -20,25 +20,24 @@ import { ComponentListModel } from '@ohos/componentlibrary';
 import { SampleModel } from '@ohos/devpractices';
 import { privacyManager } from '@kit.StoreKit';
 import { common } from '@kit.AbilityKit';
+import { accountDao, AccountModel } from '../model/AccountModel';
 
 const TAG: string = '[LoginViewModel]';
 
 export class LoginViewModel extends BaseVM<BaseState> {
   private pageContext: PageContext = AppStorage.get('pageContext') as PageContext;
-  private componentListModel: ComponentListModel = ComponentListModel.getInstance();
-  private sampleModel: SampleModel = SampleModel.getInstance();
-  private discoverModel: DiscoverModel = DiscoverModel.getInstance();
   private preferenceManager: PreferenceManager = PreferenceManager.getInstance();
+  public accounts: Array<AccountModel> = []
 
   public constructor() {
     super(new BaseState());
   }
 
-  public sendEvent(eventType: LoginEventTypeEnum): void {
+  public async sendEvent(eventType: LoginEventTypeEnum): Promise<void> {
     if (eventType === LoginEventTypeEnum.JUMP_TO_MAIN) {
       this.jumpToMainPage();
     } else if (eventType === LoginEventTypeEnum.PRELOAD_RESOURCES) {
-      this.preloadResources();
+      await this.preloadResources();
     } else if (eventType === LoginEventTypeEnum.CHECK_AGREE) {
       this.checkAgree();
     }
@@ -50,10 +49,8 @@ export class LoginViewModel extends BaseVM<BaseState> {
     });
   }
 
-  private preloadResources(): void {
-    this.componentListModel.preloadComponentData();
-    this.sampleModel.preloadSamplePageData()
-    this.discoverModel.preloadDiscoveryData()
+  private async preloadResources(): Promise<void> {
+    this.accounts = await accountDao.findAll()
   }
 
   private checkAgree(): void {
