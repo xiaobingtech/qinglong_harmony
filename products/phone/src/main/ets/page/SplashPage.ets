@@ -14,7 +14,7 @@
  */
 
 import { ConfigurationConstant } from '@kit.AbilityKit';
-import { CommonConstants, Logger, PageContext, WindowUtil, } from '@ohos/common';
+import { CommonConstants, Logger, PageContext, PreferenceManager, WindowUtil, } from '@ohos/common';
 import { SplashEventTypeEnum, SplashViewModel } from '../viewmodel/SplashViewModel';
 
 const TAG: string = '[SplashPage]';
@@ -38,8 +38,13 @@ struct SplashPage {
     animateTo({
       delay: CommonConstants.ANIMATION_DELAY,
       duration: CommonConstants.ANIMATION_DURATION,
-      onFinish: () => {
-        this.viewModel.sendEvent(SplashEventTypeEnum.JUMP_TO_LOGIN);
+      onFinish: async () => {
+        let ret = await PreferenceManager.getInstance().hasValue('token');
+        if (ret) {
+          this.viewModel.sendEvent(SplashEventTypeEnum.JUMP_TO_MAIN);
+        }else{
+          this.viewModel.sendEvent(SplashEventTypeEnum.JUMP_TO_LOGIN);
+        }
       }
     }, () => {
       this.viewModel.sendEvent(SplashEventTypeEnum.PRELOAD_RESOURCES);

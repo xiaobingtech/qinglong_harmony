@@ -84,3 +84,5 @@ export { DynamicInstallManager } from './src/main/ets/util/DynamicInstallManager
 export { ColorPickerUtil } from './src/main/ets/util/ColorPickerUtil';
 
 export { NetworkUtil } from './src/main/ets/util/NetworkUtil';
+
+export { RcpUtil, ApiResponse } from './src/main/ets/util/RcpUtil';

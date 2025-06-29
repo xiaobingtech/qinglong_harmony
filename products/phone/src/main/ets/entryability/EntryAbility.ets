@@ -16,8 +16,10 @@
 import { AbilityConstant, Configuration, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { window } from '@kit.ArkUI';
 import { BusinessError } from '@kit.BasicServicesKit';
-import { BundleManagerUtil, Logger, PageContext, WindowUtil, DynamicInstallManager, WebUtil } from '@ohos/common';
+import { BundleManagerUtil, Logger, PageContext, WindowUtil, DynamicInstallManager, WebUtil,
+  RcpUtil } from '@ohos/common';
 import GlobalUIAbilityContext from '../util/ContextConfig';
+import appDB from '../util/AppDB';
 
 const TAG = '[EntryAbility]';
 
@@ -27,6 +29,7 @@ export default class EntryAbility extends UIAbility {
     this.checkAndHandleParams(want);
     AppStorage.setOrCreate('systemColorMode', this.context.config.colorMode);
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+    appDB.initDb(this.context)
   }
 
   onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -72,6 +75,7 @@ export default class EntryAbility extends UIAbility {
       WindowUtil.hideTitleBar(windowStage);
       Logger.info(TAG, 'Succeeded in loading the content.');
     });
+    RcpUtil.init();
   }
 
   onConfigurationUpdate(newConfig: Configuration): void {

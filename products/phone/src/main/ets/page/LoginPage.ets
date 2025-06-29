@@ -14,10 +14,18 @@
  */
 
 import { ConfigurationConstant } from '@kit.AbilityKit';
-import { BreakpointTypeEnum, CommonConstants, GlobalInfoModel, Logger, PageContext, WindowUtil, } from '@ohos/common';
-import { AccountModel } from '../model/AccountModel';
+import {
+  ApiResponse,
+  BreakpointTypeEnum, CommonConstants, GlobalInfoModel, Logger, PageContext,
+  PreferenceManager,
+  WindowUtil, } from '@ohos/common';
+import { accountDao, AccountModel } from '../model/AccountModel';
 import { LoginEventTypeEnum, LoginViewModel } from '../viewmodel/LoginViewModel';
 import { SplashEventTypeEnum, SplashViewModel } from '../viewmodel/SplashViewModel';
+import  { RcpUtil } from '@ohos/common';
+import { LoginModel } from '../model/LoginModel';
+import { promptAction } from '@kit.ArkUI';
+import { UserModel } from '../model/UserModel';
 
 const TAG: string = '[LoginPage]';
 
@@ -92,8 +100,8 @@ struct LoginPage {
       Column({space: 15}) {
         if (this.loading) {
           LoadingProgress()
-            .width(50)
-            .height('100%')
+            .width($r('app.float.about_loadingProgress_size'))
+            .height($r('app.float.about_loadingProgress_size'))
         } else {
           Blank()
           Image($r('app.media.app_icon'))
@@ -192,7 +200,7 @@ struct LoginPage {
             .onClick(() => {
               this.loading = true
               if (this.useAccount) {
-                // this.loginByUser(this.username, this.password, this.code)
+                this.loginByUser(this.username, this.password, this.code)
               } else {
                 // this.loginById(this.client_id, this.client_secret)
               }
@@ -201,12 +209,81 @@ struct LoginPage {
         }
       }
       .padding(15)
-      .width(this.globalInfoModel.currentBreakpoint == BreakpointTypeEnum.MD ? '100%' : '30%')
+      .width(this.globalInfoModel.currentBreakpoint > BreakpointTypeEnum.MD ? '100%' : '30%')
       .height('100%')
       .backgroundColor(this.systemColorMode == ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT ? $r('app.color.icon_primary_dark') : $r('app.color.icon_primary_light'))
     }
     .hideTitleBar(true)
     .height('100%')
     .width('100%')
+  }
+
+  async loginByUser(username: string, password: string, code: string) {
+    let response: ApiResponse<LoginModel>|null = null
+    if (code.length == 0) {
+      response = await RcpUtil.getInstance().post<LoginModel>(
+        `${this.server}/api/user/login?t=${Date.now()}`,
+        {
+          'username':username,
+          'password':password,
+        }
+      )
+    }else{
+      response = await RcpUtil.getInstance().put<LoginModel>(
+        `${this.server}/api/user/two-factor/login?t=${Date.now()}`,
+        {
+          'username':username,
+          'password':password,
+          'code':code,
+        }
+      )
+    }
+    this.loading = false
+    if (response.data?.code == 400) {
+      promptAction.showToast({
+        message: response.data.message
+      })
+      return
+    }
+    if (response.data?.code == 410) {
+      promptAction.showToast({
+        message: response.data.message
+      })
+      return
+    }
+    if (response.data?.code == 420) {
+      this.useCode = true
+      promptAction.showToast({
+        message: "请输入两步验证码"
+      })
+      return
+    }
+    let result = response.data
+
+    let account = new AccountModel(1, this.server, username, password, this.useAccount, this.client_id, this.client_secret, 0, this.remark)
+    let exit = await accountDao.findAccount(this.server)
+    if (exit.length == 0) {
+      await accountDao.insertAccount(account)
+    }
+    await accountDao.updateCurrentAccount(account)
+
+    //存储数据
+    PreferenceManager.getInstance().setValue('server', this.server);
+    PreferenceManager.getInstance().setValue('token', result?.data.token);
+    this.getUser();
+  }
+
+  async getUser() {
+    let response = await RcpUtil.getInstance().get<UserModel>(
+      `${this.server}/api/user?t==${Date.now()}`,
+      {}
+    )
+    let result = response.data?.data
+    //存储数据
+    PreferenceManager.getInstance().setValue('username', result?.username);
+    if (result?.avatar) {
+      PreferenceManager.getInstance().setValue('avatar', result?.avatar);
+    }
+    this.viewModel.sendEvent(LoginEventTypeEnum.JUMP_TO_MAIN);
   }
 }
