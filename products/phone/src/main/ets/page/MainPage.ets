@@ -20,8 +20,6 @@ import type { GlobalInfoModel } from '@ohos/common';
 import { BreakpointTypeEnum, CommonConstants, ProcessUtil, WindowUtil } from '@ohos/common';
 import { TAB_CONTENT_STATUSES, TabBarType } from '@ohos/commonbusiness';
 import { ComponentListView } from '@ohos/componentlibrary';
-import { PracticesView } from '@ohos/devpractices';
-import { ExplorationView } from '@ohos/exploration';
 import { MineView } from '@ohos/mine';
 import { CustomSideBar } from '../component/CustomSideBar';
 import { CustomTabBar } from '../component/CustomTabBar';
@@ -52,22 +50,12 @@ struct MainPage {
       .height('100%')
 
       TabContent() {
-        PracticesView()
-      }
-      .height('100%')
-
-      TabContent() {
-        ExplorationView()
-      }
-      .height('100%')
-
-      TabContent() {
         MineView()
       }
       .height('100%')
     }
     .onAttach(() => {
-      this.tabController.preloadItems([TabBarType.HOME, TabBarType.SAMPLE, TabBarType.PRACTICE])
+      this.tabController.preloadItems([TabBarType.HOME])
     })
     .onAnimationStart((index: number, targetIndex: number) => {
       this.changeTabStatus(targetIndex);

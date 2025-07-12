@@ -176,11 +176,7 @@ export class BaseHomeViewModel<T extends BaseHomeState> extends BaseVM<BaseHomeS
     const isDark: boolean = AppStorage.get('systemColorMode') === ConfigurationConstant.ColorMode.COLOR_MODE_DARK;
     const pageContext: PageContext = AppStorage.get('pageContext') as PageContext;
     // Calculate whether to display the sample category tabBar.
-    if (offsetParam.tabIndex === TabBarType.SAMPLE) {
-      const marginTop: number = globalInfoModel.statusBarHeight + CommonConstants.NAVIGATION_HEIGHT;
-      const showTabOffset: number = this.state.bannerState.bannerHeight - marginTop;
-      this.state.topNavigationData.showTab = (offsetParam.yOffset >= showTabOffset);
-    }
+
 
     if (offsetParam.yOffset > this.state.bannerState.bannerHeight ||
       globalInfoModel.currentBreakpoint === BreakpointTypeEnum.LG ||
@@ -266,10 +262,6 @@ export class BaseHomeViewModel<T extends BaseHomeState> extends BaseVM<BaseHomeS
       if (globalInfoModel.currentBreakpoint === BreakpointTypeEnum.XL) {
         if (banner.tabViewType === TabBarType.HOME) {
           currentPageContext = AppStorage.get('componentListPageContext')!;
-        } else if (banner.tabViewType === TabBarType.SAMPLE) {
-          currentPageContext = AppStorage.get('samplePageContext')!;
-        } else {
-          currentPageContext = AppStorage.get('explorationPageContext')!;
         }
       }
       const articleParam: ArticleDetailParams = {

@@ -5,12 +5,9 @@
       "runtimeOnly": {
         "packages": [
           "@ohos/componentlibrary",
-          "@ohos/devpractices",
-          "@ohos/exploration",
           "@ohos/mine",
           "@ohos/commonbusiness",
           "@ohos/common",
-          "@ohos/exploration"
         ]
       }
     },

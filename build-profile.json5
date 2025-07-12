@@ -50,10 +50,6 @@
       "srcPath": "./features/mine",
     },
     {
-      "name": "exploration",
-      "srcPath": "./features/exploration",
-    },
-    {
       "name": "common",
       "srcPath": "./common",
     },
@@ -62,24 +58,8 @@
       "srcPath": "./features/componentlibrary",
     },
     {
-      "name": "devpractices",
-      "srcPath": "./features/devpractices",
-    },
-    {
       "name": "commonbusiness",
       "srcPath": "./features/commonbusiness",
-    },
-    {
-      "name": "wearable",
-      "srcPath": "./products/wearable",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
     }
   ]
 }

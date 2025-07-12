@@ -28,16 +28,6 @@ export const TABS_LIST: TabBarData[] = [
     title: $r('app.string.tab_home'),
   },
   {
-    id: TabBarType.SAMPLE,
-    icon: $r('sys.symbol.scenes'),
-    title: $r('app.string.tab_sample'),
-  },
-  {
-    id: TabBarType.PRACTICE,
-    icon: $r('sys.symbol.discover_fill'),
-    title: $r('app.string.tab_practice'),
-  },
-  {
     id: TabBarType.MINE,
     icon: $r('sys.symbol.person_crop_circle_fill_1'),
     title: $r('app.string.tab_mine'),

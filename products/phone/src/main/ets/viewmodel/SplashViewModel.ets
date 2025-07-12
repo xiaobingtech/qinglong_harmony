@@ -15,17 +15,13 @@
 
 import type { BusinessError } from '@kit.BasicServicesKit';
 import { BaseState, BaseVM, Logger, PageContext, PreferenceManager } from '@ohos/common';
-import { DiscoverModel } from '@ohos/exploration';
 import { ComponentListModel } from '@ohos/componentlibrary';
-import { SampleModel } from '@ohos/devpractices';
 
 const TAG: string = '[SplashViewModel]';
 
 export class SplashViewModel extends BaseVM<BaseState> {
   private pageContext: PageContext = AppStorage.get('pageContext') as PageContext;
   private componentListModel: ComponentListModel = ComponentListModel.getInstance();
-  private sampleModel: SampleModel = SampleModel.getInstance();
-  private discoverModel: DiscoverModel = DiscoverModel.getInstance();
   private preferenceManager: PreferenceManager = PreferenceManager.getInstance();
 
   public constructor() {
@@ -58,8 +54,6 @@ export class SplashViewModel extends BaseVM<BaseState> {
 
   private preloadResources(): void {
     this.componentListModel.preloadComponentData();
-    this.sampleModel.preloadSamplePageData()
-    this.discoverModel.preloadDiscoveryData()
   }
 
   private checkIsFirstStart(): void {

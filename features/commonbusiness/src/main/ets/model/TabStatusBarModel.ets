@@ -18,7 +18,7 @@ export const TAB_CONTENT_STATUSES: boolean[] = [true, true, true];
 
 export enum TabBarType {
   HOME = 0,
-  SAMPLE = 1,
-  PRACTICE = 2,
-  MINE = 3,
+  // SAMPLE = 1,
+  // PRACTICE = 2,
+  MINE = 1,
 }

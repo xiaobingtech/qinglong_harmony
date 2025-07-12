@@ -7,11 +7,11 @@
   "license": "",
   "dependencies": {
     "@ohos/componentlibrary": "file:../../features/componentlibrary",
-    "@ohos/devpractices": "file:../../features/devpractices",
-    "@ohos/exploration": "file:../../features/exploration",
     "@ohos/mine": "file:../../features/mine",
     "@ohos/commonbusiness": "file:../../features/commonbusiness",
     "@ohos/common": "file:../../common",
     "@liushengyi/smartdb": "^4.0.1"
-  }
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {}
 }

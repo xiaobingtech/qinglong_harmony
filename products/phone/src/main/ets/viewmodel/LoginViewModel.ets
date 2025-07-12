@@ -15,9 +15,7 @@
 
 import type { BusinessError } from '@kit.BasicServicesKit';
 import { BaseState, BaseVM, Logger, PageContext, PreferenceManager } from '@ohos/common';
-import { DiscoverModel } from '@ohos/exploration';
 import { ComponentListModel } from '@ohos/componentlibrary';
-import { SampleModel } from '@ohos/devpractices';
 import { privacyManager } from '@kit.StoreKit';
 import { common } from '@kit.AbilityKit';
 import { accountDao, AccountModel } from '../model/AccountModel';
