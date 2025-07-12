@@ -23,6 +23,7 @@ import { ComponentListView } from '@ohos/componentlibrary';
 import { MineView } from '@ohos/mine';
 import { CustomSideBar } from '../component/CustomSideBar';
 import { CustomTabBar } from '../component/CustomTabBar';
+import { HomeView } from '@ohos/home'
 
 const PRESS_TIME = 1500;
 
@@ -45,7 +46,7 @@ struct MainPage {
   TabComponent() {
     Tabs({ controller: this.tabController, index: this.currentIndex }) {
       TabContent() {
-        ComponentListView()
+        HomeView()
       }
       .height('100%')
 

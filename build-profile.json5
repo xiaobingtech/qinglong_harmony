@@ -60,6 +60,10 @@
     {
       "name": "commonbusiness",
       "srcPath": "./features/commonbusiness",
+    },
+    {
+      "name": "home",
+      "srcPath": "./features/home",
     }
   ]
 }
